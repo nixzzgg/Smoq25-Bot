@@ -7,135 +7,128 @@ import arrow
 import sys
 from english_words import get_english_words_set
 
-prefix = 'a_'
-random_suffix = ''.join(random.choices(string.digits, k=18))
-uidBot = prefix + random_suffix
-lol1 = ''.join(random.choices(string.digits, k=20))
-lol2 = ''.join(random.choices(string.digits, k=20))
-lol3 = ''.join(random.choices(string.digits, k=20))
-lol4 = ''.join(random.choices(string.digits, k=20))
-lol5 = ''.join(random.choices(string.digits, k=20))
-lol6 = ''.join(random.choices(string.digits, k=20))
+prefijoUid = 'a_'
+sufijoUid = ''.join(random.choices(string.digits, k=18))
+uidBot = prefijoUid + sufijoUid
+endpoint1 = ''.join(random.choices(string.digits, k=20))
+endpoint2 = ''.join(random.choices(string.digits, k=20))
+endpoint3 = ''.join(random.choices(string.digits, k=20))
+endpoint4 = ''.join(random.choices(string.digits, k=20))
 
-refresh_token = "AMf-vBxCfw3skb-cNVtd2gomnLmBJDu3oaxr6eixgAAA3SeqOlX6wRF9CsF78xV4UoCYfkNa9HyUbLKhdLto_w79hHhUY3QP8R_PKh10-PyfpVAyufh6bHT64008xhf2E6fiBD1QTI6IFpUZ7b1IYAu0iTAMaPyIZ7tnLLzCvOMFPst8VjfoSeNC0MT3jRF_-ZkL0Ln4KEY-rgfZ5FF5UUYX0FFEmUEfIids89kWRQpZ3NAb7L8W6AiXHlh7VMvYDYtZFl3SD-5qrme_z66yVE3nf7Z2fuR3dQoz1h786Z-hnqQq8e-ee64hzuTiKsnMDj65XxeRTR1JO-Loze-Uj6K1BvCclVfXDVAYa-V9bwCCpL2x0kyXM6o4bw1t0FisZnejJzARCNBvXtMsKZu7dWtDqg-DamIvf2TsOsQeNDh7bi59muO7Wjyb_np8v-nqjZfVCNVsL85Z"
+refreshToken = "AMf-vBxCfw3skb-cNVtd2gomnLmBJDu3oaxr6eixgAAA3SeqOlX6wRF9CsF78xV4UoCYfkNa9HyUbLKhdLto_w79hHhUY3QP8R_PKh10-PyfpVAyufh6bHT64008xhf2E6fiBD1QTI6IFpUZ7b1IYAu0iTAMaPyIZ7tnLLzCvOMFPst8VjfoSeNC0MT3jRF_-ZkL0Ln4KEY-rgfZ5FF5UUYX0FFEmUEfIids89kWRQpZ3NAb7L8W6AiXHlh7VMvYDYtZFl3SD-5qrme_z66yVE3nf7Z2fuR3dQoz1h786Z-hnqQq8e-ee64hzuTiKsnMDj65XxeRTR1JO-Loze-Uj6K1BvCclVfXDVAYa-V9bwCCpL2x0kyXM6o4bw1t0FisZnejJzARCNBvXtMsKZu7dWtDqg-DamIvf2TsOsQeNDh7bi59muO7Wjyb_np8v-nqjZfVCNVsL85Z"
 
 def verCambios(url):
-    max_retries = 30
-    retry_delay = 1
+    maxReintentos = 30
+    retrasoReintento = 1
     
-    for _ in range(max_retries):
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            match_id = data.get('fields', {}).get('matchId', {}).get('stringValue', None)
-            uid = data.get('fields', {}).get('uid', {}).get('stringValue', None)
-            if match_id and uid:
-                return match_id, uid
-        elif response.status_code == 404:
-            time.sleep(retry_delay)
+    for _ in range(maxReintentos):
+        respuesta = requests.get(url, headers=headers)
+        if respuesta.status_code == 200:
+            datos = respuesta.json()
+            idTrade = datos.get('fields', {}).get('matchId', {}).get('stringValue', None)
+            uid = datos.get('fields', {}).get('uid', {}).get('stringValue', None)
+            if idTrade and uid:
+                return idTrade, uid
+        elif respuesta.status_code == 404:
+            time.sleep(retrasoReintento)
         else:
             return None, None
     return None, None
 
-
-def ObtPalabras():
+def obtPalabras():
   palabras = get_english_words_set(['web2'], lower=True)
   
-  palabras_filtradas = [p for p in palabras if 3 <= len(p) <= 10]
+  palabrasFiltradas = [p for p in palabras if 3 <= len(p) <= 10]
   
-  if len(palabras_filtradas) >= 2:
-      return random.sample(palabras_filtradas, 2)
+  if len(palabrasFiltradas) >= 2:
+      return random.sample(palabrasFiltradas, 2)
 
-  palabras_respaldo = [
+  palabrasRespaldo = [
       "Cyber", "Quantum", "Neo", "Astro", "Tech", "Data", "Echo",
       "Flux", "Hydro", "Meta", "Nova", "Pixel", "Solar", "Ultra",
       "Vector", "Wave", "Cosmic", "Digital", "Neural", "Spark"
   ]
-  return random.sample(palabras_respaldo, 2)
+  return random.sample(palabrasRespaldo, 2)
 
 
 def genNombre():
-    palabras = [palabra.capitalize() for palabra in ObtPalabras()]
+    palabras = [palabra.capitalize() for palabra in obtPalabras()]
 
     if random.choice([True, False]):
         palabras.reverse()
     
-    agregar_numeros = random.choice([True, False])
+    agregarNumeros = random.choice([True, False])
     
-    if agregar_numeros:
+    if agregarNumeros:
         numeros = ''.join(random.choices(string.digits, k=random.choice([2, 3])))
-        nombre_aleatorio = palabras[0] + palabras[1] + numeros
+        nombreAleatorio = palabras[0] + palabras[1] + numeros
     else:
-        nombre_aleatorio = palabras[0] + palabras[1]
+        nombreAleatorio = palabras[0] + palabras[1]
 
-    return nombre_aleatorio
+    return nombreAleatorio
 
-nameBot1 = genNombre()
-nameBot2 = genNombre()
+nombreBot1 = genNombre()
+nombreBot2 = genNombre()
 
-def obtenerWishlist(uiddd, match_id):
-  max_retries = 3
-  retry_delay = 0.5
+def obtenerWishlist(uiddd, idTrade):
+  maxReintentos = 3
+  retrasoReintento = 0.5
 
-  for attempt in range(max_retries):
-      url = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{match_id}/{uiddd}"
+  for intento in range(maxReintentos):
+      url = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{idTrade}/{uiddd}"
       headers = {
           'User-Agent': "okhttp/3.12.13",
           'Connection': "Keep-Alive",
           'Accept-Encoding': "gzip",
-          'Authorization': f"Bearer {accessToken}",
+          'Authorization': f"Bearer {tokenDeAcceso}",
           'Firebase-Instance-ID-Token': "cN6BK1e-R3W_HFgx51-xk5:APA91bGbxvCN4Q8CAnDVgMfA2VIl_dDVYMsPt_t-n8KRTOHlceHL-Pfmg7WgLKz0yZwceWsy-9XLn3jw5MU16aqMJm2LCmhHLZmJjBGXgkrf-v1A6BNYpRXiD2t4qf2dBmb_FcqzqwUd",
           'Content-Type': "application/json; charset=utf-8"
       }
       
       try:
-          response = requests.get(url, headers=headers)
-          if response.status_code == 200:
-              data = response.json()
+          respuesta = requests.get(url, headers=headers)
+          if respuesta.status_code == 200:
+              datos = respuesta.json()
               
-              if 'documents' in data:
-                  for document in data['documents']:
-                      if 'fields' in document and 'wishlist' in document['fields']:
-                          wishlist = document['fields']['wishlist'].get('arrayValue', {}).get('values', [])
+              if 'documents' in datos:
+                  for documento in datos['documents']:
+                      if 'fields' in documento and 'wishlist' in documento['fields']:
+                          wishlist = documento['fields']['wishlist'].get('arrayValue', {}).get('values', [])
                           if wishlist:
-                              wishlist_ids = [str(item.get("integerValue")) for item in wishlist if "integerValue" in item]
-                              if wishlist_ids:
-                                  return wishlist_ids[:5]
+                              idswishlist = [str(item.get("integerValue")) for item in wishlist if "integerValue" in item]
+                              if idswishlist:
+                                  return idswishlist[:5]
               
-              if 'fields' in data and 'wishlist' in data['fields']:
-                  wishlist = data['fields']['wishlist'].get('arrayValue', {}).get('values', [])
+              if 'fields' in datos and 'wishlist' in datos['fields']:
+                  wishlist = datos['fields']['wishlist'].get('arrayValue', {}).get('values', [])
                   if wishlist:
-                      wishlist_ids = [str(item.get("integerValue")) for item in wishlist if "integerValue" in item]
-                      if wishlist_ids:
-                          return wishlist_ids[:5]
+                      idswishlist = [str(item.get("integerValue")) for item in wishlist if "integerValue" in item]
+                      if idswishlist:
+                          return idswishlist[:5]
           
-          time.sleep(retry_delay)
+          time.sleep(retrasoReintento)
           
       except Exception as e:
-          time.sleep(retry_delay)
+          time.sleep(retrasoReintento)
           continue
 
-  default_wishlist = ["300157", "300154", "300156", "300153", "300155"]
-  return default_wishlist
-
+  wishlistDefecto = ["300157", "300154", "300156", "300153", "300155"]
+  return wishlistDefecto
 
 def obtenerTimestamp():
-    current_time = arrow.utcnow()
-    timestamp_string = current_time.format("YYYY-MM-DDTHH:mm:ss") + "Z"
-    return timestamp_string
+    tiempoActual = arrow.utcnow()
+    timestampString = tiempoActual.format("YYYY-MM-DDTHH:mm:ss") + "Z"
+    return timestampString
 
-timestamp_string = obtenerTimestamp()
-
-##########################################################
-
+timestampString = obtenerTimestamp()
 
 url = "https://securetoken.googleapis.com/v1/token?key=AIzaSyDbs8XDzjZKSuMew3odWbfP0OoGLQwfhSM"
 
-payload = json.dumps({
+data = json.dumps({
     "grantType":
     "refresh_token",
     "refreshToken":
-    "refresh_token","refreshToken": refresh_token,
+    "refresh_token","refreshToken": refreshToken,
 })
 
 headers = {
@@ -152,20 +145,20 @@ headers = {
   'X-Firebase-AppCheck': "eyJlcnJvciI6IlVOS05PV05fRVJST1IifQ=="
 }
 
-responseStart = requests.post(url, data=payload, headers=headers)
+respuestaInicio = requests.post(url, data=data, headers=headers)
 
-accessToken = responseStart.json()["access_token"]
+tokenDeAcceso = respuestaInicio.json()["access_token"]
 
-code = "NXDH86"
+codigo = "" #pongan su codigo de smoq acá
 
 url = "https://europe-west2-smoqgames25-simulation.cloudfunctions.net/addTradeInvitation"
 
-payload = json.dumps({
+data = json.dumps({
   "data": {
-    "code": code,
+    "code": codigo,
     "uid2": uidBot,
     "badgeId": 240,
-    "name": nameBot1,
+    "name": nombreBot1,
     "version": 281
   }
 })
@@ -174,46 +167,40 @@ headers = {
   'User-Agent': "okhttp/3.12.13",
   'Connection': "Keep-Alive",
   'Accept-Encoding': "gzip",
-  'Authorization': f"Bearer {accessToken}",
+  'Authorization': f"Bearer {tokenDeAcceso}",
   'Firebase-Instance-ID-Token': "cN6BK1e-R3W_HFgx51-xk5:APA91bGbxvCN4Q8CAnDVgMfA2VIl_dDVYMsPt_t-n8KRTOHlceHL-Pfmg7WgLKz0yZwceWsy-9XLn3jw5MU16aqMJm2LCmhHLZmJjBGXgkrf-v1A6BNYpRXiD2t4qf2dBmb_FcqzqwUd",
   'Content-Type': "application/json; charset=utf-8"
 }
 
+respuesta = requests.post(url, data=data, headers=headers)
+datosRespuesta = json.loads(respuesta.text)
 
-response = requests.post(url, data=payload, headers=headers)
-response_data = json.loads(response.text)
-
-
-responseKey = response_data['result']['responseKey']
-
-##########################################################
+responseKey = datosRespuesta['result']['responseKey']
 
 headers = {
   'User-Agent': "okhttp/3.12.13",
   'Connection': "Keep-Alive",
   'Accept-Encoding': "gzip",
-  'Authorization': f"Bearer {accessToken}",
+  'Authorization': f"Bearer {tokenDeAcceso}",
   'Firebase-Instance-ID-Token': "cN6BK1e-R3W_HFgx51-xk5:APA91bGbxvCN4Q8CAnDVgMfA2VIl_dDVYMsPt_t-n8KRTOHlceHL-Pfmg7WgLKz0yZwceWsy-9XLn3jw5MU16aqMJm2LCmhHLZmJjBGXgkrf-v1A6BNYpRXiD2t4qf2dBmb_FcqzqwUd",
   'Content-Type': "application/json; charset=utf-8"
 }
 
-urlCheck = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Invitations/{code}/Trades"
-checkResponse = requests.get(urlCheck, headers=headers)
-checkData = checkResponse.json()
+urlVerificar = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Invitations/{codigo}/Trades"
+respuestaVerificacion = requests.get(urlVerificar, headers=headers)
+datosVerificacion = respuestaVerificacion.json()
 
-responseKey_found = False
-if 'documents' in checkData:
-    for doc in checkData['documents']:
+responseKeyEncontrada = False
+if 'documents' in datosVerificacion:
+    for doc in datosVerificacion['documents']:
         if 'fields' in doc and 'responseKey' in doc['fields']:
             if doc['fields']['responseKey']['stringValue'] == responseKey:
-                responseKey_found = True
+                responseKeyEncontrada = True
                 break
     
-if not responseKey_found:
-    print("notFound", file=sys.stderr)
+if not responseKeyEncontrada:
+    print("noEncontrada", file=sys.stderr)
     sys.exit(1)  
-
-##########################################################
 
 urlRK = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/TResp3/{responseKey}"
 
@@ -227,27 +214,27 @@ headers = {
   'x-firebase-client': "fire-cls/19.0.3 device-model/a53x fire-installations/18.0.0 kotlin/1.8.22 fire-gcs/21.0.0 fire-app-check/18.0.0 device-brand/samsung fire-core/21.0.0 fire-core-ktx/21.0.0 android-platform/ fire-sessions/2.0.3 fire-transport/19.0.0 android-target-sdk/34 fire-auth/23.0.0 android-min-sdk/23 fire-rtdb/21.0.0 fire-fn/21.0.0 fire-android/34 android-installer/com.android.vending fire-iid/21.1.0 fire-analytics/22.0.2 fire-fst/25.0.0 device-name/a53xnsxx fire-fcm/24.0.0",
   'x-firebase-gmpid': "1:121033544792:android:9e5665e285d3f548a4a62d",
   'grpc-accept-encoding': "gzip",
-  'authorization': f"Bearer {accessToken}",
+  'authorization': f"Bearer {tokenDeAcceso}",
   'x-firebase-appcheck': "eyJlcnJvciI6IlVOS05PV05fRVJST1IifQ=="
 }
 
-response = requests.get(url, headers=headers)
+respuesta = requests.get(url, headers=headers)
 
-print(response.text)
+print(respuesta.text)
 
-match_id, userUidd = verCambios(urlRK)
+idTrade, uidUsuario = verCambios(urlRK)
 
-print(match_id, userUidd)
+print(idTrade, uidUsuario)
 
 url = "https://europe-west2-smoqgames25-simulation.cloudfunctions.net/sendHelloMessage"
 
-payload = json.dumps({
+data = json.dumps({
   "data": {
     "badgeId": 240,
     "wishlist": [],
-    "name": nameBot2,
-    "opponentUid": userUidd,
-    "tradeKey": match_id
+    "name": nombreBot2,
+    "opponentUid": uidUsuario,
+    "tradeKey": idTrade
   }
 })
 
@@ -255,27 +242,27 @@ headers = {
   'User-Agent': "okhttp/3.12.13",
   'Connection': "Keep-Alive",
   'Accept-Encoding': "gzip",
-  'Authorization': f"Bearer {accessToken}",
+  'Authorization': f"Bearer {tokenDeAcceso}",
   'Firebase-Instance-ID-Token': "cN6BK1e-R3W_HFgx51-xk5:APA91bGbxvCN4Q8CAnDVgMfA2VIl_dDVYMsPt_t-n8KRTOHlceHL-Pfmg7WgLKz0yZwceWsy-9XLn3jw5MU16aqMJm2LCmhHLZmJjBGXgkrf-v1A6BNYpRXiD2t4qf2dBmb_FcqzqwUd",
   'Content-Type': "application/json; charset=utf-8"
 }
 
-response = requests.post(url, data=payload, headers=headers)
+respuesta = requests.post(url, data=data, headers=headers)
 
-print(response.text)
+print(respuesta.text)
 
-url_verify = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{match_id}/{userUidd}"
+urlVerificar = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{idTrade}/{uidUsuario}"
 
-responseee = requests.get(url_verify, headers=headers)
-response_json = responseee.json()
+respuestaVerif = requests.get(urlVerificar, headers=headers)
+jsonRespuesta = respuestaVerif.json()
 
-print(response_json)
+print(jsonRespuesta)
 
-uiddd2 = response_json['documents'][0]['fields']['uid']['stringValue']
+uidPlayer = jsonRespuesta['documents'][0]['fields']['uid']['stringValue']
 
-print(uiddd2)
+print(uidPlayer)
 
-wishlist = obtenerWishlist(uiddd2, match_id)
+wishlist = obtenerWishlist(uidPlayer, idTrade)
 
 if wishlist:
 
@@ -316,16 +303,16 @@ headers = {
   'x-firebase-client': "fire-cls/19.0.3 device-model/a53x fire-installations/18.0.0 kotlin/1.8.22 fire-gcs/21.0.0 fire-app-check/18.0.0 device-brand/samsung fire-core/21.0.0 fire-core-ktx/21.0.0 android-platform/ fire-sessions/2.0.3 fire-transport/19.0.0 android-target-sdk/34 fire-auth/23.0.0 android-min-sdk/23 fire-rtdb/21.0.0 fire-fn/21.0.0 fire-android/34 android-installer/com.android.vending fire-iid/21.1.0 fire-analytics/22.0.2 fire-fst/25.0.0 device-name/a53xnsxx fire-fcm/24.0.0",
   'x-firebase-gmpid': "1:121033544792:android:9e5665e285d3f548a4a62d",
   'grpc-accept-encoding': "gzip",
-  'authorization': f"Bearer {accessToken}",
+  'authorization': f"Bearer {tokenDeAcceso}",
   'x-firebase-appcheck': "eyJlcnJvciI6IlVOS05PV05fRVJST1IifQ=="
 }
 
-url = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{match_id}/{userUidd}/{lol2}"
+url = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{idTrade}/{uidUsuario}/{endpoint1}"
 
-payload = {
+data = {
     "fields": {
         "timestamp": {
-            "timestampValue": timestamp_string
+            "timestampValue": timestampString
         },
         "m": {
             "arrayValue": {
@@ -350,16 +337,16 @@ payload = {
     }
 }
 
-response = requests.patch(url, json=payload, headers=headers)
+respuesta = requests.patch(url, json=data, headers=headers)
 
-print(response.text)
+print(respuesta.text)
 
-url = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{match_id}/{userUidd}/{lol3}"
+url = f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{idTrade}/{uidUsuario}/{endpoint2}"
 
-payload = {
+data = {
     "fields": {
         "timestamp": {
-            "timestampValue": timestamp_string
+            "timestampValue": timestampString
         },
         "m": {
             "arrayValue": {
@@ -384,13 +371,13 @@ payload = {
     }
 }
 
-response = requests.patch(url, json=payload, headers=headers)
+respuesta = requests.patch(url, json=data, headers=headers)
 
-print(response.text)
+print(respuesta.text)
 
-def updateTrade(match_id, userUidd, timestamp_string, headers):
-    response1 = requests.patch(
-        f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{match_id}/{userUidd}/{lol4}",
+def actualizarTrade(idTrade, uidUsuario, timestampString, headers):
+    respuesta1 = requests.patch(
+        f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{idTrade}/{uidUsuario}/{endpoint3}",
         json={
             "fields": {
                 "m": {
@@ -412,15 +399,15 @@ def updateTrade(match_id, userUidd, timestamp_string, headers):
                     }
                 },
                 "timestamp": {
-                    "timestampValue": timestamp_string
+                    "timestampValue": timestampString
                 },
             }
         },
         headers=headers
     )
 
-    response2 = requests.patch(
-        f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{match_id}/{userUidd}/{lol5}",
+    respuesta2 = requests.patch(
+        f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{idTrade}/{uidUsuario}/{endpoint4}",
         json={
             "fields": {
                 "m": {
@@ -442,42 +429,42 @@ def updateTrade(match_id, userUidd, timestamp_string, headers):
                     }
                 },
                 "timestamp": {
-                    "timestampValue": timestamp_string
+                    "timestampValue": timestampString
                 },
             }
         },
         headers=headers
     )
 
-    return response1.json(), response2.json()
+    return respuesta1.json(), respuesta2.json()
 
-def verCambios2(response_json, match_id, userUidd, timestamp_string, headers):
-    for doc in response_json.get('documents', []):
-        m_values = doc.get("fields", {}).get("m", {}).get("arrayValue", {}).get("values", [])
-        for value in m_values:
-            if value.get("integerValue", "") == "76":
-                raise ValueError("exit")
-            elif value.get("integerValue", "") == "65":
-                return updateTrade(match_id, userUidd, timestamp_string, headers)
+def verCambios2(jsonRespuesta, idTrade, uidUsuario, timestampString, headers):
+    for doc in jsonRespuesta.get('documents', []):
+        valoresM = doc.get("fields", {}).get("m", {}).get("arrayValue", {}).get("values", [])
+        for valor in valoresM:
+            if valor.get("integerValue", "") == "76":
+                raise ValueError("salir")
+            elif valor.get("integerValue", "") == "65":
+                return actualizarTrade(idTrade, uidUsuario, timestampString, headers)
     return None
 
-start_time = time.time() 
+tiempoInicio = time.time() 
 
 while True:
-    response = requests.get(
-        f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{match_id}/{uiddd2}",
+    respuesta = requests.get(
+        f"https://firestore.googleapis.com/v1/projects/smoqgames25-simulation/databases/(default)/documents/Trade3/{idTrade}/{uidPlayer}",
         headers=headers,
         stream=True,
     )
-    if response.status_code == 200:
-        response_json = response.json()
-        print(response_json) 
-        update_result = verCambios2(response_json, match_id, userUidd, timestamp_string, headers)
+    if respuesta.status_code == 200:
+        jsonRespuesta = respuesta.json()
+        print(jsonRespuesta) 
+        resultadoActualizacion = verCambios2(jsonRespuesta, idTrade, uidUsuario, timestampString, headers)
 
-        if update_result:
+        if resultadoActualizacion:
             break 
     else:
-        print("error: ", response.status_code)
+        print("error: ", respuesta.status_code)
 
-    if time.time() - start_time > 30:
+    if time.time() - tiempoInicio > 30:
         raise TimeoutError("lentoo")
